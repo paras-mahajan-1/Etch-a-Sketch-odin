@@ -1,52 +1,71 @@
-console.log("It's working");
-
-function askingInput() {
-    let inputGrid = prompt("How many squares you want in one line?");
-    if (inputGrid > 100) {askingInput()};
-    return inputGrid;
-};
 const button = document.createElement("button");
 document.body.appendChild(button);
-button.addEventListener("click", eventButton);
-
-button.textContent = "Clear and start again";
-
-function eventButton() { 
-
-const block =  document.createElement("div");
-document.body.appendChild(block);
-block.setAttribute("class", "main-block");
-
-let value = askingInput();
-
-for (let i = 1; i <= value; i++) {
-    let div = document.createElement("div");
-    div.className = "box";
-
-    block.appendChild(div);
+button.textContent = "clear and start NEW!"
+function checkRowsNumber () {
+    while (true) {
+        var inputRows = +prompt("Enter the rows number!");
+        if (inputRows < 100) {
+           break; 
+        }
+    }
+    return inputRows
 };
 
-function randomColor() {
-    // const number = Math.floor(Math.random()*4);
-    let bgColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random()*256)}, 50)`;
-    return bgColor
+
+function mainAction () {
+
+    let value = checkRowsNumber();
+
+    const mainDiv = document.createElement("div");
+    document.body.appendChild(mainDiv);
+    mainDiv.setAttribute("class", "main")
+
+
+    mainDiv.setAttribute("style", `width: ${value * 20}px; height: auto; `)
+
+    // let checkVariable = mainDiv.getAttribute("style").split(";")[0].split(":")[1].slice()
+    // let withoutPx = +(checkVariable.split("").slice(1, checkVariable.length-2).join(""));
+    // if (withoutPx > 2000){
+    // mainAction()};
+
+    for (let i = 1; i <= value*value; i++) {
+        let div = document.createElement("div");
+        mainDiv.appendChild(div);
+        div.setAttribute("class", "cube");
+        
+    }; 
+    // creating empty div done!;
+    // adding effects;
+    document.body.addEventListener("mouseover", eventFunctionOver);
+    document.body.addEventListener("mouseout", eventFunctionOut);
+    
+};
+function eventFunctionOver(event) {
+    let effectedArea = event.target.closest("div");
+    if (!effectedArea) {return };
+    effectedArea.style.backgroundColor = randomColorFunction();
+    
+};
+function eventFunctionOut(event) {
+    let effectedArea = event.target.closest("div");
+    if (!effectedArea) {return };
+    effectedArea.style.backgroundColor = '';
+
+};
+
+function randomColorFunction () {
+    let bgColor;
+    bgColor = `rgb(${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)} `
+    return bgColor;
 }
 
-document.body.addEventListener("mouseover", (event) => {
-    // console.log(event.target);
-    // event.target.setAttribute('class', "randomColor");
-    // event.target.setAttribute("style", `background-color:${randomColor()}`)
-    // console.log(event.target.closest("div"))
-    let effectedArea = event.target.closest("div");
-    if (!effectedArea) {return ;}
-    effectedArea.style.backgroundColor = randomColor();
+mainAction();
+
+button.addEventListener("click", event => {
+    
+    // button.nextElementSibling.remove();
+    event.target.nextElementSibling.remove();
+    mainAction();
+
 })
 
-document.body.addEventListener("mouseout", (event) => {
-    let effectedArea = event.target.closest("div");
-    console.log(effectedArea);
-    if (!effectedArea) {return ;}
-    effectedArea.style.backgroundColor = "";
-})
-// button.removeEventListener("click", eventButton);
-}
